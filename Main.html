@@ -1,17 +1,140 @@
-<!DOCTYPE html>
-<html>
-    
+<head>
+<link rel="stylesheet" type="text/css" href="player.css">
+</head>
+
 <body>
-    
-<input id="audio_file" type="file" accept="audio/*" />
-<audio controls id="audio_player" />
-</body>
-    
+<div class="image-upload">
+    <label for="audio_file">
+        <img src="cloud-storage3.png"/>
+    </label>
+
+    <input id="audio_file" type="file"/>
+</div>
+<audio id="audio_player" /> </audio>
+<div id="audioplayer">
+  <button id="pButton" class="pause" onclick="play()"></button>
+  <div id="timeline">
+    <div id="playhead"></div>
+  </div>
+</div>
+
+
+<br>
+<br>
+<div id="pushpin">
+  <button id="addPin" class="add" onclick ="add()"></button>
+   <input type="text" id="pinName" value="Pin Name">
+</div>
+
+
 <script>
-audio_file.onchange = function(){
-    var files = this.files;
-    var file = URL.createObjectURL(files[0]); 
-    audio_player.src = file; 
-    audio_player.play();
+audio_file.onchange = function() {
+  var files = this.files;
+  var file = URL.createObjectURL(files[0]);
+  audio_player.src = file;
+  audio_player.play();
 };
+
+var music = document.getElementById('audio_player'); // id for audio element
+var duration; // Duration of audio clip
+var pButton = document.getElementById('pButton'); // play button
+
+var playhead = document.getElementById('playhead'); // playhead
+
+var timeline = document.getElementById('timeline'); // timeline
+// timeline width adjusted for playhead
+var timelineWidth = timeline.offsetWidth - playhead.offsetWidth;
+
+// timeupdate event listener
+music.addEventListener("timeupdate", timeUpdate, false);
+
+//Makes timeline clickable
+timeline.addEventListener("click", function(event) {
+  moveplayhead(event);
+  music.currentTime = duration * clickPercent(event);
+}, false);
+
+// returns click as decimal (.77) of the total timelineWidth
+function clickPercent(e) {
+  return (e.pageX - timeline.offsetLeft) / timelineWidth;
+}
+
+// Makes playhead draggable 
+playhead.addEventListener('mousedown', mouseDown, false);
+window.addEventListener('mouseup', mouseUp, false);
+
+// Boolean value so that mouse is moved on mouseUp only when the playhead is released 
+var onplayhead = false;
+// mouseDown EventListener
+function mouseDown() {
+    onplayhead = true;
+    window.addEventListener('mousemove', moveplayhead, true);
+    music.removeEventListener('timeupdate', timeUpdate, false);
+  }
+  // mouseUp EventListener
+  // getting input from all mouse clicks
+function mouseUp(e) {
+    if (onplayhead == true) {
+      moveplayhead(e);
+      window.removeEventListener('mousemove', moveplayhead, true);
+      // change current time
+      music.currentTime = duration * clickPercent(e);
+      music.addEventListener('timeupdate', timeUpdate, false);
+    }
+    onplayhead = false;
+  }
+  // mousemove EventListener
+  // Moves playhead as user drags
+function moveplayhead(e) {
+  var newMargLeft = e.pageX - timeline.offsetLeft;
+  if (newMargLeft >= 0 && newMargLeft <= timelineWidth) {
+    playhead.style.marginLeft = newMargLeft + "px";
+  }
+  if (newMargLeft < 0) {
+    playhead.style.marginLeft = "0px";
+  }
+  if (newMargLeft > timelineWidth) {
+    playhead.style.marginLeft = timelineWidth + "px";
+  }
+}
+
+// timeUpdate 
+// Synchronizes playhead position with current point in audio 
+function timeUpdate() {
+  var playPercent = timelineWidth * (music.currentTime / duration);
+  playhead.style.marginLeft = playPercent + "px";
+  if (music.currentTime == duration) {
+    pButton.className = "";
+    pButton.className = "play";
+  }
+}
+
+function add() {
+  
+}
+//Play and Pause
+function play() {
+  // start music
+  if (music.paused) {
+    music.play();
+    // remove play, add pause
+    pButton.className = "";
+    pButton.className = "pause";
+  } else { // pause music
+    music.pause();
+    // remove pause, add play
+    pButton.className = "";
+    pButton.className = "play";
+  }
+}
+
+// Gets audio file duration
+music.addEventListener("canplaythrough", function() {
+  duration = music.duration;
+}, false);
 </script>
+
+<br><br>
+<div id="footer" >Icons made by <a href="http://www.flaticon.com/authors/yannick" title="Yannick">Yannick</a>, <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
+
+</body>

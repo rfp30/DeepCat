@@ -1,0 +1,73 @@
+.image-upload > input
+{
+    display: none;
+}
+
+#audioplayer {
+  width: 1180px;
+  height: 100px;
+  margin: 50px auto auto auto;
+  border: solid;
+}
+
+#pushpin {
+  width: 1180px;
+  height: 60px;
+  margin: 50px auto auto auto;
+  border: solid;
+}
+
+#addPin {
+  height: 60px;
+  width: 60px;
+  border: none;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  float: left;
+  outline: none;
+}
+
+#pinName {
+  font-family: "Interstate","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Garuda,Verdana,Tahoma,sans-serif;
+  font-size: 20px;
+}
+
+#pButton {
+  height: 60px;
+  width: 60px;
+  border: none;
+  background-size: 50% 50%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  float: left;
+  outline: none;
+
+}
+.add {
+   background: url('http://www.alexkatz.me/codepen/images/play.png');
+}
+.play {
+  background: url('http://www.alexkatz.me/codepen/images/play.png');
+}
+
+.pause {
+  background: url('http://www.alexkatz.me/codepen/images/pause.png');
+}
+
+#timeline {
+  width: 1100px;
+  height: 20px;
+  margin-top: 60px;
+  float: left;
+  border-radius: 15px;
+  background: rgba(0, 0, 0, .3);
+}
+
+#playhead {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-top: 1px;
+  background: rgba(0, 0, 0, 1);
+}
